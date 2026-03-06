@@ -3,12 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Три команды · Турнирный счёт</title>
+    <title>Три команды · Чистая версия</title>
     <style>
+        /* БАЗОВЫЕ СБРОСЫ И СТИЛИ */
         * {
-            box-sizing: border-box;
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
         }
 
         body {
@@ -20,23 +21,19 @@
             align-items: center;
             justify-content: center;
             padding: 20px;
-            margin: 0;
         }
 
-        /* Модальное окно ввода названий команд */
+        /* МОДАЛЬНОЕ ОКНО ВВОДА */
         .modal-overlay {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.85);
-            backdrop-filter: blur(6px);
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            backdrop-filter: blur(5px);
             display: flex;
             align-items: center;
             justify-content: center;
             z-index: 2000;
-            transition: opacity 0.3s;
         }
 
         .modal-card {
@@ -53,7 +50,6 @@
         .modal-card h2 {
             color: #f8e3a7;
             font-size: 2.4rem;
-            font-weight: 500;
             margin-bottom: 35px;
             text-shadow: 0 2px 5px #ff9900;
         }
@@ -68,8 +64,6 @@
             color: #ffd58c;
             font-size: 1.5rem;
             margin-bottom: 8px;
-            font-weight: 500;
-            letter-spacing: 0.5px;
         }
 
         .input-group input {
@@ -82,7 +76,6 @@
             color: #ffde9e;
             font-weight: 600;
             outline: none;
-            transition: 0.2s;
         }
 
         .input-group input:focus {
@@ -103,7 +96,6 @@
             cursor: pointer;
             transition: 0.08s linear;
             margin-top: 20px;
-            letter-spacing: 2px;
         }
 
         .start-btn:active {
@@ -111,42 +103,40 @@
             box-shadow: 0 4px 0 #1b4f1f, 0 10px 20px black;
         }
 
-        /* основной интерфейс (изначально скрыт) */
+        /* ОСНОВНОЕ ТАБЛО (изначально скрыто) */
         .scoreboard {
             max-width: 1100px;
             width: 100%;
             background: rgba(255, 255, 255, 0.08);
             backdrop-filter: blur(4px);
-            border-radius: 60px 60px 40px 40px;
+            border-radius: 60px;
             padding: 30px 25px;
-            box-shadow: 0 30px 45px -20px rgba(0,0,0,0.8), inset 0 1px 3px rgba(255,255,255,0.1);
+            box-shadow: 0 30px 45px -20px rgba(0,0,0,0.8);
             border: 1px solid rgba(255,215,0,0.2);
-            display: none; /* скрыт до ввода названий */
+            display: none;
         }
 
         h1 {
             text-align: center;
-            font-weight: 400;
-            letter-spacing: 2px;
-            font-size: 2.8rem;
             color: #f8e3a7;
+            font-size: 2.8rem;
             text-shadow: 0 2px 10px #ffb347;
-            margin-bottom: 10px;
-            word-break: break-word;
+            margin-bottom: 20px;
         }
 
+        /* СЕТКА КАРТОЧЕК — ТРИ КОЛОНКИ */
         .grid {
             display: grid;
-            grid-template-columns: repeat(3, 1fr); /* три колонки */
+            grid-template-columns: repeat(3, 1fr);
             gap: 25px;
             margin: 30px 0 25px;
         }
 
-        .player-card {
+        .team-card {
             background: #283845;
-            border-radius: 40px 40px 30px 30px;
+            border-radius: 40px;
             padding: 25px 12px 20px;
-            box-shadow: 0 12px 0 #121d2b, 0 10px 15px rgba(0,0,0,0.5);
+            box-shadow: 0 12px 0 #121d2b;
             border-left: 2px solid #f3b34c;
             border-right: 2px solid #c57c1a;
             display: flex;
@@ -154,16 +144,13 @@
             align-items: center;
         }
 
-        .player-name {
+        .team-name {
             font-size: 2.2rem;
             font-weight: 700;
             color: #ffde9e;
             text-shadow: 0 2px 0 #7f4f1a;
-            margin-bottom: 8px;
             text-align: center;
-            line-height: 1.2;
             word-break: break-word;
-            max-width: 100%;
         }
 
         .score-display {
@@ -173,10 +160,8 @@
             color: #ffd966;
             padding: 6px 30px;
             border-radius: 80px;
-            width: fit-content;
             margin: 10px auto 15px;
             box-shadow: inset 0 -3px 0 #0f1a22, 0 5px 0 #0b1219;
-            letter-spacing: 2px;
         }
 
         .button-group {
@@ -184,7 +169,6 @@
             flex-wrap: wrap;
             justify-content: center;
             gap: 10px;
-            margin-top: 5px;
         }
 
         .add-btn {
@@ -196,12 +180,9 @@
             width: 70px;
             height: 60px;
             border-radius: 40px;
-            box-shadow: 0 6px 0 #1e2b32, 0 5px 10px black;
+            box-shadow: 0 6px 0 #1e2b32;
             cursor: pointer;
-            transition: 0.08s linear;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
+            transition: 0.08s;
         }
 
         .add-btn:active {
@@ -209,6 +190,7 @@
             box-shadow: 0 2px 0 #1e2b32;
         }
 
+        /* Цвета кнопок */
         .add-btn[data-points="10"] { background: #3b6e8f; }
         .add-btn[data-points="20"] { background: #3c8d7e; }
         .add-btn[data-points="30"] { background: #6d8f4b; }
@@ -218,7 +200,7 @@
         .control-panel {
             display: flex;
             justify-content: center;
-            margin: 20px 0 15px;
+            margin: 20px 0;
         }
 
         .end-btn {
@@ -230,15 +212,14 @@
             border-radius: 60px;
             color: #ffecaa;
             text-shadow: 0 2px 0 #4e1a1a;
-            box-shadow: 0 15px 0 #631f1f, 0 10px 30px black;
-            letter-spacing: 5px;
+            box-shadow: 0 15px 0 #631f1f;
             cursor: pointer;
-            transition: 0.05s linear;
+            transition: 0.05s;
         }
 
         .end-btn:active {
             transform: translateY(10px);
-            box-shadow: 0 5px 0 #631f1f, 0 10px 20px black;
+            box-shadow: 0 5px 0 #631f1f;
         }
 
         .winner-zone {
@@ -249,14 +230,8 @@
             text-align: center;
             border: 3px solid #f5c542;
             font-size: 2.2rem;
-            font-weight: 600;
             color: #ffd966;
             backdrop-filter: blur(6px);
-            transition: all 0.3s;
-        }
-
-        .hidden {
-            display: none !important;
         }
 
         .other-participants {
@@ -264,24 +239,23 @@
             background: #1e2e3ab3;
             border-radius: 50px;
             padding: 20px;
-            font-size: 1.5rem;
             color: #cfdce6;
         }
 
         .other-row {
             display: flex;
-            flex-wrap: wrap;
             justify-content: center;
             gap: 30px 50px;
+            flex-wrap: wrap;
         }
 
         .other-badge {
             background: #263b49;
             padding: 10px 35px;
             border-radius: 50px;
-            box-shadow: inset 0 -2px 0 #0b161f;
-            font-weight: 600;
             font-size: 1.8rem;
+            font-weight: 600;
+            box-shadow: inset 0 -2px 0 #0b161f;
         }
 
         .other-badge strong {
@@ -289,12 +263,14 @@
             margin-right: 10px;
         }
 
+        .hidden {
+            display: none !important;
+        }
+
         #confetti-canvas {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
             pointer-events: none;
             z-index: 1000;
         }
@@ -304,7 +280,7 @@
 
     <canvas id="confetti-canvas"></canvas>
 
-    <!-- Модальное окно ввода трёх названий команд -->
+    <!-- Модальное окно ввода названий команд -->
     <div id="modalOverlay" class="modal-overlay">
         <div class="modal-card">
             <h2>⚡ Введите названия команд ⚡</h2>
@@ -324,9 +300,9 @@
         </div>
     </div>
 
-    <!-- Основное табло (изначально скрыто) -->
+    <!-- Основное табло -->
     <div class="scoreboard" id="scoreboard">
-        <h1>🏆 <span id="dynamicTitle">КОМАНДНЫЙ СЧЁТ</span> 🏆</h1>
+        <h1 id="dynamicTitle">⚡ КОМАНДЫ ⚡</h1>
 
         <div class="grid" id="playerGrid"></div>
 
@@ -340,7 +316,7 @@
 
     <script>
         (function() {
-            // === Элементы ===
+            // DOM-элементы
             const modal = document.getElementById('modalOverlay');
             const scoreboard = document.getElementById('scoreboard');
             const team1Input = document.getElementById('team1Input');
@@ -352,18 +328,17 @@
             // Переменные игры
             let teamNames = ['Команда 1', 'Команда 2', 'Команда 3'];
             let scores = [0, 0, 0];
-            let gameActive = true;          // активно ли начисление очков
+            let gameActive = true;
             let winnerTimeout = null;
             let confettiActive = false;
             let animationFrame = null;
 
-            // Canvas конфетти
+            // Конфетти canvas
             const confettiCanvas = document.getElementById('confetti-canvas');
             let ctx = confettiCanvas.getContext('2d');
             let width, height;
             let particles = [];
 
-            // resize
             function resizeCanvas() {
                 width = window.innerWidth;
                 height = window.innerHeight;
@@ -373,7 +348,7 @@
             window.addEventListener('resize', resizeCanvas);
             resizeCanvas();
 
-            // === Частицы конфетти ===
+            // Частицы конфетти
             function createParticle() {
                 const colors = ['#f2d74b', '#f25f5c', '#80cbc4', '#ffb3ba', '#b39ddb', '#ffcc80', '#f8bbd0', '#a5d6a7'];
                 return {
@@ -389,9 +364,7 @@
 
             function initConfetti() {
                 particles = [];
-                for (let i = 0; i < 130; i++) {
-                    particles.push(createParticle());
-                }
+                for (let i = 0; i < 130; i++) particles.push(createParticle());
             }
 
             function updateConfetti() {
@@ -402,9 +375,7 @@
                     p.y += p.speedY;
                     p.x += p.speedX;
                     p.rotation += 0.5;
-
                     if (p.y < height + 30) anyVisible = true;
-
                     ctx.save();
                     ctx.translate(p.x, p.y);
                     ctx.rotate((p.rotation * Math.PI) / 180);
@@ -413,12 +384,7 @@
                     ctx.restore();
                 }
                 if (!anyVisible) {
-                    particles = particles.map(p => {
-                        if (p.y > height + 40) {
-                            return { ...p, y: -20, x: Math.random() * width };
-                        }
-                        return p;
-                    });
+                    particles = particles.map(p => (p.y > height + 40) ? { ...p, y: -20, x: Math.random() * width } : p);
                 }
                 animationFrame = requestAnimationFrame(updateConfetti);
             }
@@ -440,13 +406,14 @@
                 ctx.clearRect(0, 0, width, height);
             }
 
-            // === Отрисовка карточек команд ===
+            // Отрисовка карточек команд
             function renderPlayers() {
+                const grid = document.getElementById('playerGrid');
                 let html = '';
                 for (let i = 0; i < teamNames.length; i++) {
                     html += `
-                        <div class="player-card" data-index="${i}">
-                            <div class="player-name">${teamNames[i]}</div>
+                        <div class="team-card" data-index="${i}">
+                            <div class="team-name">${teamNames[i]}</div>
                             <div class="score-display" id="score-${i}">${scores[i]}</div>
                             <div class="button-group">
                                 <button class="add-btn" data-points="10" data-index="${i}" ${!gameActive ? 'disabled' : ''}>10</button>
@@ -458,7 +425,7 @@
                         </div>
                     `;
                 }
-                document.getElementById('playerGrid').innerHTML = html;
+                grid.innerHTML = html;
             }
 
             function refreshScores() {
@@ -473,17 +440,17 @@
                 if (!gameActive) return;
                 const btn = e.target.closest('.add-btn');
                 if (!btn) return;
-                const index = btn.getAttribute('data-index');
-                const points = parseInt(btn.getAttribute('data-points'), 10);
-                if (index !== null && !isNaN(points)) {
-                    scores[index] = (scores[index] || 0) + points;
+                const index = btn.dataset.index;
+                const points = parseInt(btn.dataset.points, 10);
+                if (index !== undefined && !isNaN(points)) {
+                    scores[index] += points;
                     refreshScores();
                 }
             }
 
+            // Победитель
             function getWinnerInfo() {
-                let maxScore = -1;
-                let winnerIndex = 0;
+                let maxScore = -1, winnerIndex = 0;
                 for (let i = 0; i < scores.length; i++) {
                     if (scores[i] > maxScore) {
                         maxScore = scores[i];
@@ -493,6 +460,7 @@
                 return { winnerIndex, maxScore };
             }
 
+            // Показать остальных через 6 секунд
             function showOthersAfterDelay() {
                 if (winnerTimeout) clearTimeout(winnerTimeout);
                 winnerTimeout = setTimeout(() => {
@@ -514,12 +482,12 @@
                 }, 6000);
             }
 
+            // Завершение игры
             function finishGame() {
                 if (!gameActive) return;
 
                 gameActive = false;
-                // перерисовать с disabled-кнопками
-                renderPlayers();
+                renderPlayers();  // перерисовка с disabled-кнопками
 
                 const { winnerIndex, maxScore } = getWinnerInfo();
                 const winnerName = teamNames[winnerIndex];
@@ -529,41 +497,31 @@
                 winnerBlock.classList.remove('hidden');
 
                 document.getElementById('othersBlock').classList.add('hidden');
-                if (winnerTimeout) {
-                    clearTimeout(winnerTimeout);
-                    winnerTimeout = null;
-                }
+                if (winnerTimeout) clearTimeout(winnerTimeout);
 
                 startConfetti();
                 showOthersAfterDelay();
             }
 
-            // === Старт игры после ввода названий ===
+            // Старт игры (после ввода названий)
             function startGame() {
-                // считываем названия (если пусто — подставляем дефолтные)
-                let t1 = team1Input.value.trim();
-                let t2 = team2Input.value.trim();
-                let t3 = team3Input.value.trim();
-                if (t1 === '') t1 = 'Команда 1';
-                if (t2 === '') t2 = 'Команда 2';
-                if (t3 === '') t3 = 'Команда 3';
+                let t1 = team1Input.value.trim() || 'Команда 1';
+                let t2 = team2Input.value.trim() || 'Команда 2';
+                let t3 = team3Input.value.trim() || 'Команда 3';
 
                 teamNames = [t1, t2, t3];
-                scores = [0, 0, 0];          // сброс очков
-                gameActive = true;              // активный режим
-                stopConfetti();                  // на всякий случай остановить конфетти
-                // скрываем модалку
+                scores = [0, 0, 0];
+                gameActive = true;
+                stopConfetti();
+
                 modal.style.display = 'none';
-                // показываем табло
                 scoreboard.style.display = 'block';
 
-                // обновим заголовок
-                dynamicTitle.innerText = `${t1} · ${t2} · ${t3}`;
+                dynamicTitle.innerText = `${t1}  ·  ${t2}  ·  ${t3}`;
 
-                // отрисовываем карточки с новыми названиями
                 renderPlayers();
 
-                // скрыть блоки победителя/остальных (если были видны с прошлого раза)
+                // Скрыть старые результаты
                 document.getElementById('winnerBlock').classList.add('hidden');
                 document.getElementById('othersBlock').classList.add('hidden');
                 if (winnerTimeout) {
@@ -572,402 +530,14 @@
                 }
             }
 
-            // обработчик на кнопку СТАРТ
+            // События
             startBtn.addEventListener('click', startGame);
-
-            // можно также по Enter (необязательно)
             [team1Input, team2Input, team3Input].forEach(input => {
-                input.addEventListener('keypress', (e) => {
-                    if (e.key === 'Enter') startGame();
-                });
+                input.addEventListener('keypress', (e) => { if (e.key === 'Enter') startGame(); });
             });
 
-            // делегирование кликов по кнопкам добавления очков
             document.getElementById('playerGrid').addEventListener('click', handleAddScore);
-
-            // кнопка КОНЕЦ
             document.getElementById('endGameBtn').addEventListener('click', finishGame);
-
-            // на случай, если вдруг модалка не скрылась, но мы начали – готово.
-            // также обработаем ситуацию, если пользователь захочет перезапустить — перезагрузка страницы.
-            // можно было бы добавить кнопку рестарта, но для простоты оставим так.
-        })();
-    </script>
-</body>
-</html>    font-weight: 800;
-            background: #1d2b37;
-            color: #ffd966;
-            padding: 6px 20px;
-            border-radius: 80px;
-            width: fit-content;
-            margin: 5px auto 12px;
-            box-shadow: inset 0 -3px 0 #0f1a22, 0 5px 0 #0b1219;
-            letter-spacing: 2px;
-        }
-        .button-group {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 8px;
-            margin-top: 5px;
-        }
-        .add-btn {
-            background: #3f525f;
-            border: none;
-            color: white;
-            font-size: 1.3rem;
-            font-weight: 700;
-            width: 58px;
-            height: 52px;
-            border-radius: 40px;
-            box-shadow: 0 6px 0 #1e2b32, 0 5px 10px black;
-            cursor: pointer;
-            transition: 0.08s linear;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .add-btn:active {
-            transform: translateY(6px);
-            box-shadow: 0 2px 0 #1e2b32;
-        }
-        .add-btn:hover {
-            background: #506f82;
-        }
-        .add-btn[data-points="10"] { background: #3b6e8f; }
-        .add-btn[data-points="20"] { background: #3c8d7e; }
-        .add-btn[data-points="30"] { background: #6d8f4b; }
-        .add-btn[data-points="40"] { background: #b87c2b; }
-        .add-btn[data-points="50"] { background: #b3513a; }
-
-        .control-panel {
-            display: flex;
-            justify-content: center;
-            margin: 10px 0 15px;
-        }
-        .end-btn {
-            background: linear-gradient(145deg, #ca4141, #a12828);
-            border: none;
-            font-size: 2.8rem;
-            font-weight: 800;
-            padding: 15px 60px;
-            border-radius: 60px;
-            color: #ffecaa;
-            text-shadow: 0 2px 0 #4e1a1a;
-            box-shadow: 0 15px 0 #631f1f, 0 10px 30px black;
-            letter-spacing: 5px;
-            cursor: pointer;
-            transition: 0.05s linear;
-            width: fit-content;
-        }
-        .end-btn:active {
-            transform: translateY(10px);
-            box-shadow: 0 5px 0 #631f1f, 0 10px 20px black;
-        }
-        .winner-zone {
-            background: #1d2a33d9;
-            border-radius: 70px;
-            padding: 25px 35px;
-            margin-top: 25px;
-            text-align: center;
-            border: 3px solid #f5c542;
-            font-size: 2.2rem;
-            font-weight: 600;
-            color: #ffd966;
-            backdrop-filter: blur(6px);
-            transition: all 0.3s;
-        }
-        .hidden {
-            display: none !important;
-        }
-        .other-participants {
-            margin-top: 20px;
-            background: #1e2e3ab3;
-            border-radius: 50px;
-            padding: 20px;
-            font-size: 1.3rem;
-            color: #cfdce6;
-        }
-        .other-row {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 25px 35px;
-        }
-        .other-badge {
-            background: #263b49;
-            padding: 8px 25px;
-            border-radius: 40px;
-            box-shadow: inset 0 -2px 0 #0b161f;
-            font-weight: 500;
-            font-size: 1.3rem;
-        }
-        .other-badge strong {
-            color: #f8c15e;
-            margin-right: 6px;
-        }
-        /* конфетти canvas */
-        #confetti-canvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 1000;
-        }
-    </style>
-</head>
-<body>
-
-    <!-- canvas для конфетти -->
-    <canvas id="confetti-canvas"></canvas>
-
-    <div class="scoreboard">
-        <h1>✨ <span>ГОЛОСОВАНИЕ</span> ✨</h1>
-
-        <!-- сетка 9 игроков -->
-        <div class="grid" id="playerGrid"></div>
-
-        <!-- кнопка КОНЕЦ -->
-        <div class="control-panel">
-            <button class="end-btn" id="endGameBtn">КОНЕЦ</button>
-        </div>
-
-        <!-- блок победителя (изначально скрыт) -->
-        <div id="winnerBlock" class="winner-zone hidden"></div>
-
-        <!-- блок остальных участников (скрыт до показа) -->
-        <div id="othersBlock" class="other-participants hidden"></div>
-    </div>
-
-    <script>
-        (function() {
-            // Имена участниц (9)
-            const NAMES = ["Амина", "Вика", "Полина В.", "Ангелина", "Рита", "Лера", "Полина Е.", "Саша", "Марина"];
-
-            // Начальные очки (0)
-            let scores = new Array(9).fill(0);
-
-            // Состояние игры
-            let gameActive = true;            // активно ли начисление очков (после конца -> false)
-            let winnerTimeout = null;          // таймаут для переключения на "остальные"
-            let confettiActive = false;         // флаг работы анимации
-            let animationFrame = null;           // id requestAnimationFrame
-            let confettiCanvas = document.getElementById('confetti-canvas');
-            let ctx = confettiCanvas.getContext('2d');
-            let width, height;
-            let particles = [];
-
-            // ------ элементы DOM ------
-            const grid = document.getElementById('playerGrid');
-            const winnerBlock = document.getElementById('winnerBlock');
-            const othersBlock = document.getElementById('othersBlock');
-            const endBtn = document.getElementById('endGameBtn');
-
-            // Утилита для ресайза канваса
-            function resizeCanvas() {
-                width = window.innerWidth;
-                height = window.innerHeight;
-                confettiCanvas.width = width;
-                confettiCanvas.height = height;
-            }
-            window.addEventListener('resize', resizeCanvas);
-            resizeCanvas();
-
-            // ----- класс частицы конфетти (упрощённый) -----
-            function createParticle() {
-                const colors = ['#f2d74b', '#f25f5c', '#80cbc4', '#ffb3ba', '#b39ddb', '#ffcc80', '#f8bbd0', '#a5d6a7'];
-                return {
-                    x: Math.random() * width,
-                    y: Math.random() * height - height,
-                    size: Math.random() * 7 + 4,
-                    speedY: Math.random() * 5 + 3,
-                    speedX: Math.random() * 2 - 1,
-                    color: colors[Math.floor(Math.random() * colors.length)],
-                    rotation: Math.random() * 360,
-                };
-            }
-
-            function initConfetti() {
-                particles = [];
-                for (let i = 0; i < 130; i++) {
-                    particles.push(createParticle());
-                }
-            }
-
-            function updateConfetti() {
-                if (!confettiActive) return;
-                ctx.clearRect(0, 0, width, height);
-                let anyVisible = false;
-                for (let p of particles) {
-                    p.y += p.speedY;
-                    p.x += p.speedX;
-                    p.rotation += 0.5;
-
-                    if (p.y < height + 30) anyVisible = true;
-
-                    // рисуем квадратик (конфетти)
-                    ctx.save();
-                    ctx.translate(p.x, p.y);
-                    ctx.rotate((p.rotation * Math.PI) / 180);
-                    ctx.fillStyle = p.color;
-                    ctx.fillRect(-p.size/2, -p.size/2, p.size, p.size);
-                    ctx.restore();
-                }
-                // если частицы улетели далеко вниз — перезаполняем сверху
-                if (!anyVisible) {
-                    particles = particles.map(p => {
-                        if (p.y > height + 40) {
-                            return { ...p, y: -20, x: Math.random() * width };
-                        }
-                        return p;
-                    });
-                }
-                animationFrame = requestAnimationFrame(updateConfetti);
-            }
-
-            function startConfetti() {
-                if (confettiActive) return;
-                confettiActive = true;
-                initConfetti();
-                if (animationFrame) cancelAnimationFrame(animationFrame);
-                animationFrame = requestAnimationFrame(updateConfetti);
-            }
-
-            function stopConfetti() {
-                confettiActive = false;
-                if (animationFrame) {
-                    cancelAnimationFrame(animationFrame);
-                    animationFrame = null;
-                }
-                ctx.clearRect(0, 0, width, height);
-            }
-
-            // Отрисовка карточек игроков
-            function renderPlayers() {
-                let html = '';
-                for (let i = 0; i < NAMES.length; i++) {
-                    html += `
-                        <div class="player-card" data-index="${i}">
-                            <div class="player-name">${NAMES[i]}</div>
-                            <div class="score-display" id="score-${i}">${scores[i]}</div>
-                            <div class="button-group">
-                                <button class="add-btn" data-points="10" data-index="${i}" ${!gameActive ? 'disabled' : ''}>10</button>
-                                <button class="add-btn" data-points="20" data-index="${i}" ${!gameActive ? 'disabled' : ''}>20</button>
-                                <button class="add-btn" data-points="30" data-index="${i}" ${!gameActive ? 'disabled' : ''}>30</button>
-                                <button class="add-btn" data-points="40" data-index="${i}" ${!gameActive ? 'disabled' : ''}>40</button>
-                                <button class="add-btn" data-points="50" data-index="${i}" ${!gameActive ? 'disabled' : ''}>50</button>
-                            </div>
-                        </div>
-                    `;
-                }
-                grid.innerHTML = html;
-            }
-
-            // обновить числа на экране
-            function refreshScores() {
-                for (let i = 0; i < NAMES.length; i++) {
-                    const el = document.getElementById(`score-${i}`);
-                    if (el) el.innerText = scores[i];
-                }
-            }
-
-            // Обработчик добавления очков
-            function handleAddScore(e) {
-                if (!gameActive) return; // после конца не добавляем
-                const btn = e.target.closest('.add-btn');
-                if (!btn) return;
-                const index = btn.getAttribute('data-index');
-                const points = parseInt(btn.getAttribute('data-points'), 10);
-                if (index !== null && !isNaN(points)) {
-                    scores[index] = (scores[index] || 0) + points;
-                    refreshScores();
-                }
-            }
-
-            // Определить победителя (индекс и макс очки)
-            function getWinnerInfo() {
-                let maxScore = -1;
-                let winnerIndex = 0;
-                for (let i = 0; i < scores.length; i++) {
-                    if (scores[i] > maxScore) {
-                        maxScore = scores[i];
-                        winnerIndex = i;
-                    }
-                }
-                // если ничья — берём первого с максимумом (уже так и есть)
-                return { winnerIndex, maxScore };
-            }
-
-            // Показать блок остальных (после 6 сек)
-            function showOthersAfterDelay() {
-                if (winnerTimeout) clearTimeout(winnerTimeout);
-                winnerTimeout = setTimeout(() => {
-                    // убираем конфетти
-                    stopConfetti();
-
-                    // получаем победителя, чтобы исключить его из списка
-                    const { winnerIndex } = getWinnerInfo();
-
-                    // собираем остальных
-                    const others = NAMES.map((name, idx) => ({ name, score: scores[idx] }))
-                                         .filter((_, idx) => idx !== winnerIndex);
-
-                    let othersHtml = '<div class="other-row">';
-                    others.forEach(p => {
-                        othersHtml += `<div class="other-badge"><strong>${p.name}</strong> ${p.score} очк.</div>`;
-                    });
-                    othersHtml += '</div>';
-                    othersBlock.innerHTML = othersHtml;
-                    othersBlock.classList.remove('hidden');
-
-                    winnerTimeout = null;
-                }, 6000); // 6 секунд
-            }
-
-            // Завершение игры: блокируем кнопки, показываем победителя + конфетти
-            function finishGame() {
-                if (!gameActive) return; // уже завершено
-
-                gameActive = false;
-                // Деактивируем кнопки (визуально через атрибут disabled + обновим рендер)
-                renderPlayers(); // перерендер с disabled
-
-                const { winnerIndex, maxScore } = getWinnerInfo();
-                const winnerName = NAMES[winnerIndex];
-
-                // Показываем победителя крупно
-                winnerBlock.innerHTML = `🏆 <strong style="font-size:3rem;">${winnerName}</strong>  —  ${maxScore} очков 🏆`;
-                winnerBlock.classList.remove('hidden');
-
-                // Прячем блок остальных (если был открыт с прошлого раза)
-                othersBlock.classList.add('hidden');
-                if (winnerTimeout) {
-                    clearTimeout(winnerTimeout);
-                    winnerTimeout = null;
-                }
-
-                // Запускаем конфетти
-                startConfetti();
-
-                // Через 6 секунд остановить конфетти и показать остальных
-                showOthersAfterDelay();
-            }
-
-            // События через делегирование
-            grid.addEventListener('click', handleAddScore);
-
-            endBtn.addEventListener('click', () => {
-                finishGame();
-            });
-
-            // Инициализация
-            renderPlayers();
-
-            // Если нужно переиграть — можно перезагрузить страницу, для простоты так оставим.
-            // Дополнительно, защита от повторного запуска таймера при повторном клике на КОНЕЦ.
-            // finishGame уже проверяет gameActive.
         })();
     </script>
 </body>
